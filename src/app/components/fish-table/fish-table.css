@@ -1,0 +1,30 @@
+/* fish-table.component.css */
+
+/* Contenedor de la tabla */
+:host {
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* Encabezado de la tabla */
+p-table th {
+  background-color: #1976d2; /* azul PrimeNG */
+  color: white;
+  font-weight: bold;
+}
+
+/* Filas alternas para mejor lectura */
+p-table .p-datatable-tbody > tr:nth-child(odd) {
+  background-color: #f1f5f9;
+}
+
+/* Hover sobre filas */
+p-table .p-datatable-tbody > tr:hover {
+  background-color: #e0e7ff;
+  cursor: pointer;
+}
+
+/* Texto centrado en algunas columnas */
+p-table td {
+  text-align: center;
+}

@@ -1,1 +1,22 @@
-<p>fish-table works!</p>
+<p-table [value]="captures" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>Tipo de pez</th>
+      <th>Peso (kg)</th>
+      <th>Fecha captura</th>
+      <th>Ubicación</th>
+      <th>ID Usuario</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-capture>
+    <tr>
+      <td>{{ capture.id }}</td>
+      <td>{{ capture.fishType }}</td>
+      <td>{{ capture.weight }}</td>
+      <td>{{ capture.captureDate | date:'shortDate' }}</td>
+      <td>{{ capture.location }}</td>
+      <td>{{ capture.userId }}</td>
+    </tr>
+  </ng-template>
+</p-table>
