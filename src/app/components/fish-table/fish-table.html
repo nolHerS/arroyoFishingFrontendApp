@@ -1,22 +1,53 @@
 <div class="fish-table-container">
   <h2>Capturas de Peces</h2>
 
-  <p-table
-    [value]="captures"
-    [paginator]="true"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} capturas"
-    [rowsPerPageOptions]="[5,10,20]"
-    scrollable="true"
-    styleClass="fish-table"
-  >
-    <!-- Encabezado -->
+  <div class="filters-container">
+    <div class="filters">
+      <!-- Tipo de pez -->
+      <div class="filter-item">
+        <i class="pi pi-fish"></i>
+        <p-autoComplete [(ngModel)]="fishTypeSearch"
+                        [suggestions]="fishTypeSuggestions"
+                        (completeMethod)="filterFishType($event)"
+                        placeholder="Tipo de pez"
+                        [dropdown]="true"
+                        [forceSelection]="false"></p-autoComplete>
+      </div>
+
+      <!-- Ubicación -->
+      <div class="filter-item">
+        <i class="pi pi-map-marker"></i>
+        <p-autoComplete [(ngModel)]="locationSearch"
+                        [suggestions]="locationSuggestions"
+                        (completeMethod)="filterLocation($event)"
+                        placeholder="Ubicación"
+                        [dropdown]="true"
+                        [forceSelection]="false"></p-autoComplete>
+      </div>
+
+      <!-- Usuario -->
+      <div class="filter-item">
+        <i class="pi pi-user"></i>
+        <p-autoComplete [(ngModel)]="userSearch"
+                        [suggestions]="userSuggestions"
+                        (completeMethod)="filterUser($event)"
+                        placeholder="Usuario"
+                        [dropdown]="true"
+                        [forceSelection]="false"></p-autoComplete>
+      </div>
+    </div>
+  </div>
+
+  <p-table [value]="captures | userFilter:users:userSearch"
+           [paginator]="true"
+           [rows]="10"
+           [rowsPerPageOptions]="[5,10,20]"
+           scrollable="true"
+           styleClass="fish-table">
     <ng-template pTemplate="header">
       <tr>
         <th>ID</th>
         <th>Fecha de captura</th>
-        <th>Creada</th>
         <th>Tipo de pez</th>
         <th>Ubicación</th>
         <th>Peso (kg)</th>
@@ -24,25 +55,21 @@
       </tr>
     </ng-template>
 
-    <!-- Cuerpo de la tabla -->
     <ng-template pTemplate="body" let-capture>
-      <tr>
+      <tr *ngIf="capture.fishType.toLowerCase().includes(fishTypeSearch.toLowerCase()) &&
+                 (!locationSearch || (capture.location || '').toLowerCase().includes(locationSearch.toLowerCase()))">
         <td>{{ capture.id }}</td>
-        <td>{{ capture.captureDate | date:'shortDate' }}</td>
-        <td>{{ capture.createdAt ? (capture.createdAt | date:'short') : '-' }}</td>
+        <td>{{ capture.captureData | date:'dd/MM/yyyy' }}</td>
         <td>{{ capture.fishType }}</td>
         <td>{{ capture.location || '-' }}</td>
         <td>{{ capture.weight }}</td>
-        <td>{{ capture.userId }}</td>
+        <td>{{ getUserName(capture.userId) }}</td>
       </tr>
     </ng-template>
 
-    <!-- Mensaje cuando no hay datos -->
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="7" class="no-data">
-          No hay capturas registradas 😢
-        </td>
+        <td colspan="6" class="no-data">No hay capturas registradas 😢</td>
       </tr>
     </ng-template>
   </p-table>

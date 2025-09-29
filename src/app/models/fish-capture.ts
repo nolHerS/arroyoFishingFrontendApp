@@ -1,6 +1,6 @@
 export interface FishCapture {
   id: number;
-  captureDate: string;   // se puede convertir a Date en TS si quieres
+  captureData: string;   // se puede convertir a Date en TS si quieres
   createdAt?: string;    // opcional, como LocalDateTime
   fishType: string;
   location?: string;
