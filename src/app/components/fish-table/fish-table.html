@@ -6,17 +6,25 @@
 
     <!-- Tipo de pez -->
     <div class="filter-item">
-      <i class="pi pi-fish"></i>
+      <i class="pi pi-prime"></i>
       <p-autoComplete
         [(ngModel)]="fishTypeSearch"
         [suggestions]="fishTypeSuggestions"
         (completeMethod)="filterFishType($event)"
-        placeholder="Tipo de pez"
+        placeholder="Tipo de pez​"
         [dropdown]="true"
         [forceSelection]="false"
         [minLength]="0"
         [autoHighlight]="true"
-        [panelStyleClass]="'autocomplete-panel-minimal'">
+        [panelStyle]="{
+          'margin-top' : '8px',
+          'background-color': 'rgba(204,229,255,0.95)',
+          'border': '1px solid #ccc',
+          'border-radius': '8px',
+          'box-shadow': '0 4px 8px rgba(0,0,0,0.1)',
+          'max-height': '250px',
+          'overflow-y': 'auto'
+        }">
 
         <ng-template let-fish #item>
           <div class="autocomplete-item-minimal">
@@ -39,7 +47,15 @@
         [forceSelection]="false"
         [minLength]="0"
         [autoHighlight]="true"
-        [panelStyleClass]="'autocomplete-panel-minimal'">
+        [panelStyle]="{
+          'margin-top' : '8px',
+          'background-color': 'rgba(204,229,255,0.95)',
+          'border': '1px solid #ccc',
+          'border-radius': '8px',
+          'box-shadow': '0 4px 8px rgba(0,0,0,0.1)',
+          'max-height': '250px',
+          'overflow-y': 'auto'
+        }">
 
         <ng-template let-location #item>
           <div class="autocomplete-item-minimal">
@@ -62,7 +78,15 @@
         [forceSelection]="false"
         [minLength]="0"
         [autoHighlight]="true"
-        [panelStyleClass]="'autocomplete-panel-minimal'">
+        [panelStyle]="{
+          'margin-top' : '8px',
+          'background-color': 'rgba(204,229,255,0.95)',
+          'border': '1px solid #ccc',
+          'border-radius': '8px',
+          'box-shadow': '0 4px 8px rgba(0,0,0,0.1)',
+          'max-height': '250px',
+          'overflow-y': 'auto'
+        }">
 
         <ng-template let-user #item>
           <div class="autocomplete-item-minimal">
@@ -73,18 +97,25 @@
       </p-autoComplete>
     </div>
 
+    <p-button icon="pi pi-filter-slash"
+            [raised]="true"
+            [style]="{
+              'margin-top' : '5px',
+              'margin-left' : '4px'
+            }"
+            (click)="clearFilters()"/>
   </div>
 </div>
 
   <p-table [value]="captures | userFilter:users:userSearch"
-           [paginator]="true"
+
            [rows]="10"
            [rowsPerPageOptions]="[5,10,20]"
            scrollable="true"
+           scrollHeight="400px"
            styleClass="fish-table">
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
-        <th>ID</th>
         <th>Fecha de captura</th>
         <th>Tipo de pez</th>
         <th>Ubicación</th>
@@ -93,10 +124,9 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-capture>
+    <ng-template #body let-capture>
       <tr *ngIf="capture.fishType.toLowerCase().includes(fishTypeSearch.toLowerCase()) &&
                  (!locationSearch || (capture.location || '').toLowerCase().includes(locationSearch.toLowerCase()))">
-        <td>{{ capture.id }}</td>
         <td>{{ capture.captureData | date:'dd/MM/yyyy' }}</td>
         <td>{{ capture.fishType }}</td>
         <td>{{ capture.location || '-' }}</td>

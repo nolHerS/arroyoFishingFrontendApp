@@ -9,6 +9,8 @@ import { forkJoin } from 'rxjs';
 import { FishCapture } from '../../models/fish-capture';
 import { User } from '../../models/user';
 import { UserFilterPipe } from '../../pipes/user-filter.pipe';
+import { ButtonDirective, Button } from "primeng/button";
+import { ButtonIcon } from "../../../../node_modules/primeng/button/index";
 
 @Component({
   selector: 'app-fish-table',
@@ -19,8 +21,9 @@ import { UserFilterPipe } from '../../pipes/user-filter.pipe';
     AutoCompleteModule,
     FormsModule,
     HttpClientModule,
-    UserFilterPipe
-  ],
+    UserFilterPipe,
+    Button
+],
   templateUrl: './fish-table.html',
   styleUrls: ['./fish-table.css'],
 })
@@ -99,4 +102,15 @@ export class FishTable implements OnInit {
     const user = this.users.find(u => u.id === userId);
     return user ? user.fullName : 'Desconocido';
   }
+
+    clearFilters() {
+  this.fishTypeSearch = '';
+  this.locationSearch = '';
+  this.userSearch = '';
+
+  // Reiniciar sugerencias si quieres
+  this.fishTypeSuggestions = [...this.fishTypeOptions];
+  this.locationSuggestions = [...this.locationOptions];
+  this.userSuggestions = [...this.userOptions];
+}
 }
