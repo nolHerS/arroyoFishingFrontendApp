@@ -1,42 +1,80 @@
 <div class="fish-table-container">
-  <h2>Capturas de Peces</h2>
+  <h2>📊 Capturas de Peces</h2>
 
   <div class="filters-container">
-    <div class="filters">
-      <!-- Tipo de pez -->
-      <div class="filter-item">
-        <i class="pi pi-fish"></i>
-        <p-autoComplete [(ngModel)]="fishTypeSearch"
-                        [suggestions]="fishTypeSuggestions"
-                        (completeMethod)="filterFishType($event)"
-                        placeholder="Tipo de pez"
-                        [dropdown]="true"
-                        [forceSelection]="false"></p-autoComplete>
-      </div>
+  <div class="filters">
 
-      <!-- Ubicación -->
-      <div class="filter-item">
-        <i class="pi pi-map-marker"></i>
-        <p-autoComplete [(ngModel)]="locationSearch"
-                        [suggestions]="locationSuggestions"
-                        (completeMethod)="filterLocation($event)"
-                        placeholder="Ubicación"
-                        [dropdown]="true"
-                        [forceSelection]="false"></p-autoComplete>
-      </div>
+    <!-- Tipo de pez -->
+    <div class="filter-item">
+      <i class="pi pi-fish"></i>
+      <p-autoComplete
+        [(ngModel)]="fishTypeSearch"
+        [suggestions]="fishTypeSuggestions"
+        (completeMethod)="filterFishType($event)"
+        placeholder="Tipo de pez"
+        [dropdown]="true"
+        [forceSelection]="false"
+        [minLength]="0"
+        [autoHighlight]="true"
+        [panelStyleClass]="'autocomplete-panel-minimal'">
 
-      <!-- Usuario -->
-      <div class="filter-item">
-        <i class="pi pi-user"></i>
-        <p-autoComplete [(ngModel)]="userSearch"
-                        [suggestions]="userSuggestions"
-                        (completeMethod)="filterUser($event)"
-                        placeholder="Usuario"
-                        [dropdown]="true"
-                        [forceSelection]="false"></p-autoComplete>
-      </div>
+        <ng-template let-fish #item>
+          <div class="autocomplete-item-minimal">
+            {{ fish }}
+          </div>
+        </ng-template>
+
+      </p-autoComplete>
     </div>
+
+    <!-- Ubicación -->
+    <div class="filter-item">
+      <i class="pi pi-map-marker"></i>
+      <p-autoComplete
+        [(ngModel)]="locationSearch"
+        [suggestions]="locationSuggestions"
+        (completeMethod)="filterLocation($event)"
+        placeholder="Ubicación"
+        [dropdown]="true"
+        [forceSelection]="false"
+        [minLength]="0"
+        [autoHighlight]="true"
+        [panelStyleClass]="'autocomplete-panel-minimal'">
+
+        <ng-template let-location #item>
+          <div class="autocomplete-item-minimal">
+            {{ location }}
+          </div>
+        </ng-template>
+
+      </p-autoComplete>
+    </div>
+
+    <!-- Usuario -->
+    <div class="filter-item">
+      <i class="pi pi-user"></i>
+      <p-autoComplete
+        [(ngModel)]="userSearch"
+        [suggestions]="userSuggestions"
+        (completeMethod)="filterUser($event)"
+        placeholder="Usuario"
+        [dropdown]="true"
+        [forceSelection]="false"
+        [minLength]="0"
+        [autoHighlight]="true"
+        [panelStyleClass]="'autocomplete-panel-minimal'">
+
+        <ng-template let-user #item>
+          <div class="autocomplete-item-minimal">
+            {{ user }}
+          </div>
+        </ng-template>
+
+      </p-autoComplete>
+    </div>
+
   </div>
+</div>
 
   <p-table [value]="captures | userFilter:users:userSearch"
            [paginator]="true"

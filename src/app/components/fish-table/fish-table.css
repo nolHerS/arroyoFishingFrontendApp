@@ -93,3 +93,24 @@
   justify-content: center;
   margin-top: 1rem;
 }
+
+/* Panel del autocomplete minimalista */
+.autocomplete-panel-minimal {
+  background-color: #ffffff !important;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  z-index: 2000 !important;
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 0.2rem 0;
+}
+
+/* Cada item del panel */
+.autocomplete-item-minimal {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  color: black;
+  background-color: gray;
+  cursor: pointer;
+}
+

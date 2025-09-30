@@ -39,7 +39,7 @@ export class FishTable implements OnInit {
   locationOptions: string[] = [];
   userOptions: string[] = [];
 
-  // Sugerencias para autocomplete
+  // Sugerencias
   fishTypeSuggestions: string[] = [];
   locationSuggestions: string[] = [];
   userSuggestions: string[] = [];
@@ -47,60 +47,53 @@ export class FishTable implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    console.log('FishTable inicializado ✅');
     forkJoin({
       users: this.http.get<User[]>('http://localhost:8080/api/users'),
       captures: this.http.get<FishCapture[]>('http://localhost:8080/api/fishCaptures')
     }).subscribe({
       next: ({ users, captures }) => {
+        console.log('Usuarios cargados:', users);
+        console.log('Capturas cargadas:', captures);
+
         this.users = users;
         this.captures = captures;
 
-        // Crear listas únicas para autocompletar
         this.fishTypeOptions = Array.from(new Set(captures.map(c => c.fishType)));
         this.locationOptions = Array.from(new Set(captures.map(c => c.location).filter((l): l is string => !!l)));
         this.userOptions = users.map(u => u.fullName);
 
-        // Inicializar sugerencias con todas las opciones
         this.fishTypeSuggestions = [...this.fishTypeOptions];
         this.locationSuggestions = [...this.locationOptions];
         this.userSuggestions = [...this.userOptions];
+
+        console.log('Opciones inicializadas:', {
+          fishTypes: this.fishTypeOptions,
+          locations: this.locationOptions,
+          users: this.userOptions
+        });
       },
-      error: (err) => console.error('Error cargando datos:', err)
+      error: (err) => console.error('❌ Error cargando datos:', err)
     });
   }
 
   filterFishType(event: any) {
-  const query = event.query?.toLowerCase() || '';
-  if (!query) {
-    // Si no escribes nada, muestra todas las opciones
-    this.fishTypeSuggestions = [...this.fishTypeOptions];
-  } else {
-    this.fishTypeSuggestions = this.fishTypeOptions.filter(ft =>
-      ft.toLowerCase().includes(query)
-    );
+    const query = event.query?.toLowerCase() || '';
+    this.fishTypeSuggestions = this.fishTypeOptions.filter(ft => ft.toLowerCase().includes(query));
+    console.log('Filtrando fishType con:', query, '->', this.fishTypeSuggestions);
   }
-}
 
-filterLocation(event: any) {
-  const query = event.query?.toLowerCase() || '';
-  if (!query) {
-    this.locationSuggestions = [...this.locationOptions];
-  } else {
+  filterLocation(event: any) {
+    const query = event.query?.toLowerCase() || '';
     this.locationSuggestions = this.locationOptions.filter(loc => loc.toLowerCase().includes(query));
+    console.log('Filtrando location con:', query, '->', this.locationSuggestions);
   }
-}
-
 
   filterUser(event: any) {
-  const query = event.query?.toLowerCase() || '';
-  if (!query) {
-    // Si no escribes nada, muestra todos los usuarios
-    this.userSuggestions = [...this.userOptions];
-  } else {
+    const query = event.query?.toLowerCase() || '';
     this.userSuggestions = this.userOptions.filter(u => u.toLowerCase().includes(query));
+    console.log('Filtrando user con:', query, '->', this.userSuggestions);
   }
-}
-
 
   getUserName(userId: number): string {
     const user = this.users.find(u => u.id === userId);
