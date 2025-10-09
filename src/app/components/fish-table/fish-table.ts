@@ -53,7 +53,7 @@ export class FishTable implements OnInit {
     console.log('FishTable inicializado ✅');
     forkJoin({
       users: this.http.get<User[]>('http://localhost:8080/api/users'),
-      captures: this.http.get<FishCapture[]>('http://localhost:8080/api/fishCaptures')
+      captures: this.http.get<FishCapture[]>('http://localhost:8080/api/fish-captures')
     }).subscribe({
       next: ({ users, captures }) => {
         console.log('Usuarios cargados:', users);
