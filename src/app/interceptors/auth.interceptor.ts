@@ -40,7 +40,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   // Para todas las demás peticiones, añadir token si existe
   const token = authService.getToken();
-  console.log('🔍 INTERCEPTOR - Token:', token ? '✅ SÍ (primeros chars: ' + token.substring(0, 20) + '...)' : '❌ NO');
+  console.log('🔍 INTERCEPTOR - Token:', token ? `✅ SÍ (primeros chars: ${token.substring(0, 20)}...)` : '❌ NO');
+console.log('🔍 INTERCEPTOR - Token completo:', token); // AÑADIR ESTA LÍNEA PARA VER EL TOKEN
 
   if (token) {
     console.log('✅ INTERCEPTOR - Añadiendo header Authorization');

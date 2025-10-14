@@ -61,12 +61,18 @@ export class AuthService {
    * Guardar sesión en localStorage
    */
   private setSession(authResult: LoginResponse): void {
-    localStorage.setItem('token', authResult.token);
-    localStorage.setItem('refreshToken', authResult.refreshToken);
-    localStorage.setItem('user', JSON.stringify(authResult.user));
-    this.currentUserSubject.next(authResult.user);
-    this.isAuthenticatedSubject.next(true);
-  }
+  console.log('💾 Guardando sesión:', authResult);
+  console.log('💾 Token recibido:', authResult.accessToken); // ✅ Cambiar a accessToken
+
+  localStorage.setItem('token', authResult.accessToken);      // ✅ Cambiar a accessToken
+  localStorage.setItem('refreshToken', authResult.refreshToken);
+  localStorage.setItem('user', JSON.stringify(authResult.user));
+
+  console.log('💾 Token guardado en localStorage:', localStorage.getItem('token'));
+
+  this.currentUserSubject.next(authResult.user);
+  this.isAuthenticatedSubject.next(true);
+}
 
   /**
    * Cargar usuario desde localStorage
@@ -91,8 +97,10 @@ export class AuthService {
    * Obtener token actual
    */
   getToken(): string | null {
-    return localStorage.getItem('token');
-  }
+  const token = localStorage.getItem('token');
+  console.log('🔑 getToken llamado, valor:', token);
+  return token;
+}
 
   /**
    * Obtener usuario actual
