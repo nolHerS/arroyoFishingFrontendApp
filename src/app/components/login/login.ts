@@ -47,6 +47,7 @@ export class LoginComponent {
       return;
     }
 
+    console.log('🔐 Intentando login con:', this.credentials);
     this.loading = true;
     this.errorMessage = '';
 

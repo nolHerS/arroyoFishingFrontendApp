@@ -1,0 +1,159 @@
+/* Contenedor principal */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+  background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+  padding: 1.5rem;
+}
+
+/* Tarjeta principal */
+.register-card {
+  width: 100%;
+  max-width: 450px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: white;
+  animation: fadeInUp 0.4s ease;
+}
+
+/* Cabecera */
+.register-header {
+  text-align: center;
+  padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+/* Icono */
+.register-header i {
+  font-size: 3rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Título */
+.register-header h2 {
+  font-size: 1.6rem;
+  margin: 0.2rem 0;
+  font-weight: 680;
+  color: #ffffff;
+}
+
+/* Subtítulo / texto */
+.register-header p {
+  font-size: 1.5 rem;
+  margin: 0.15rem 0 0;
+  color: #ebfdf4;
+  font-weight: 510;
+}
+
+
+/* Formulario */
+form {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Grupos de formulario */
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.35rem;
+}
+
+/* Contenedor input + icono */
+.p-input-icon-left,
+.p-input-icon-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Inputs y password */
+.p-input-icon-left input,
+.p-input-icon-right input,
+.p-password input {
+  flex: 1;
+  border-radius: 10px !important;
+  padding: 0.6rem 0.8rem !important;
+  font-size: 0.95rem;
+  border: 1px solid #cbd5e1 !important;
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+}
+
+/* Iconos dentro de inputs */
+.p-input-icon-left i,
+.p-input-icon-right i {
+  font-size: 1rem;
+  color: #667eea;
+}
+
+/* Botón principal */
+:host ::ng-deep .p-button {
+  width: 100%;
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%); /* morado-azulado */
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  color: white;
+}
+
+/* Hover del botón */
+:host ::ng-deep .p-button:hover {
+  background: linear-gradient(135deg, #6b7df5, #9f7aea);
+  transform: translateY(-1px);
+}
+
+/* Mensaje de error */
+:host ::ng-deep .p-message {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+/* Footer */
+.register-footer {
+  text-align: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+
+.register-footer a {
+  color: #667eea; /* azul cabecera */
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Animación */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .register-card {
+    max-width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .register-header h2 {
+    font-size: 1.4rem;
+  }
+}

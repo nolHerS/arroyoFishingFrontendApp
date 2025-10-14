@@ -1,1 +1,70 @@
-<p>login works!</p>
+<div class="login-container">
+  <p-card class="login-card">
+    <ng-template pTemplate="header">
+      <div class="login-header">
+        <h2>Iniciar Sesión</h2>
+        <p>Accede a tu cuenta de pescador</p>
+      </div>
+    </ng-template>
+
+    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-user"></i>
+          <input
+            pInputText
+            id="username"
+            name="username"
+            [(ngModel)]="credentials.username"
+            placeholder="Nombre de usuario"
+            [disabled]="loading"
+            required
+            class="w-full" />
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-lock"></i>
+          <p-password
+            id="password"
+            name="password"
+            [(ngModel)]="credentials.password"
+            placeholder="Contraseña"
+            [disabled]="loading"
+            [feedback]="false"
+            [toggleMask]="true"
+            required
+            styleClass="w-full"
+            inputStyleClass="w-full">
+          </p-password>
+        </span>
+      </div>
+
+      @if (errorMessage) {
+        <p-message
+          severity="error"
+          [text]="errorMessage"
+          styleClass="w-full">
+        </p-message>
+      }
+
+      <p-button
+        type="submit"
+        label="Iniciar Sesión"
+        icon="pi pi-sign-in"
+        [loading]="loading"
+        [disabled]="!loginForm.valid"
+        styleClass="w-full">
+      </p-button>
+    </form>
+
+    <ng-template pTemplate="footer">
+      <div class="login-footer">
+        <p>¿No tienes cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

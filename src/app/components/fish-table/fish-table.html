@@ -6,7 +6,7 @@
 
     <!-- Tipo de pez -->
     <div class="filter-item">
-      <i class="pi pi-prime"></i>
+      <i class="pi pi-list"></i>
       <p-autoComplete
         [(ngModel)]="fishTypeSearch"
         [suggestions]="fishTypeSuggestions"
@@ -101,7 +101,8 @@
             [raised]="true"
             [style]="{
               'margin-top' : '5px',
-              'margin-left' : '4px'
+              'margin-left' : '4px',
+              'background-color' : '#34d399'
             }"
             (click)="clearFilters()"/>
   </div>
@@ -125,15 +126,17 @@
     </ng-template>
 
     <ng-template #body let-capture>
-      <tr *ngIf="capture.fishType.toLowerCase().includes(fishTypeSearch.toLowerCase()) &&
-                 (!locationSearch || (capture.location || '').toLowerCase().includes(locationSearch.toLowerCase()))">
-        <td>{{ capture.captureData | date:'dd/MM/yyyy' }}</td>
-        <td>{{ capture.fishType }}</td>
-        <td>{{ capture.location || '-' }}</td>
-        <td>{{ capture.weight }}</td>
-        <td>{{ getUserName(capture.userId) }}</td>
-      </tr>
-    </ng-template>
+  @if (capture.fishType.toLowerCase().includes(fishTypeSearch.toLowerCase()) &&
+       (!locationSearch || (capture.location || '').toLowerCase().includes(locationSearch.toLowerCase()))) {
+    <tr>
+      <td>{{ capture.captureData | date:'dd/MM/yyyy' }}</td>
+      <td>{{ capture.fishType }}</td>
+      <td>{{ capture.location || '-' }}</td>
+      <td>{{ capture.weight }}</td>
+      <td>{{ getUserName(capture.userId) }}</td>
+    </tr>
+  }
+</ng-template>
 
     <ng-template pTemplate="emptymessage">
       <tr>

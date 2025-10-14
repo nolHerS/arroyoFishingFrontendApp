@@ -1,0 +1,88 @@
+<p-toast></p-toast>
+
+<!-- Botón flotante para crear captura -->
+<p-button
+  icon="pi pi-plus"
+  [rounded]="true"
+  severity="success"
+  size="large"
+  (onClick)="openDialog()"
+  class="create-button"
+  pTooltip="Nueva Captura"
+  tooltipPosition="left">
+</p-button>
+
+<!-- Dialog para crear captura -->
+<p-dialog
+  [(visible)]="displayDialog"
+  header="🎣 Registrar Nueva Captura"
+  [modal]="true"
+  [style]="{width: '500px'}"
+  [draggable]="false"
+  [resizable]="false">
+
+  <div class="dialog-content">
+    <div class="field">
+      <label for="fishType">Tipo de Pez *</label>
+      <input
+        pInputText
+        id="fishType"
+        [(ngModel)]="newCapture.fishType"
+        placeholder="Ej: Trucha, Carpa, Lucio..."
+        class="w-full" />
+    </div>
+
+    <div class="field">
+      <label for="location">Ubicación</label>
+      <input
+        pInputText
+        id="location"
+        [(ngModel)]="newCapture.location"
+        placeholder="Ej: Río Ebro, Embalse de..."
+        class="w-full" />
+    </div>
+
+    <div class="field">
+      <label for="weight">Peso (kg) *</label>
+      <p-inputNumber
+        id="weight"
+        [(ngModel)]="newCapture.weight"
+        [minFractionDigits]="1"
+        [maxFractionDigits]="2"
+        [min]="0.1"
+        suffix=" kg"
+        placeholder="0.0"
+        class="w-full">
+      </p-inputNumber>
+    </div>
+
+    <div class="field">
+      <label for="captureDate">Fecha de Captura *</label>
+      <p-datePicker
+        id="captureDate"
+        [(ngModel)]="newCapture.captureData"
+        dateFormat="dd/mm/yy"
+        [showIcon]="true"
+        [maxDate]="dateCaptureToday()"
+        [iconDisplay]="'input'"
+        class="w-full">
+      </p-datePicker>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancelar"
+      icon="pi pi-times"
+      (onClick)="displayDialog = false"
+      [text]="true">
+    </p-button>
+    <p-button
+      label="Registrar Captura"
+      icon="pi pi-check"
+      severity="success"
+      (onClick)="createCapture()"
+      [loading]="loading">
+    </p-button>
+  </ng-template>
+</p-dialog>

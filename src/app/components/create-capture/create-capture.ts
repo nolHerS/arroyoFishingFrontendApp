@@ -1,0 +1,107 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { DatePickerModule } from 'primeng/datepicker';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
+interface NewCapture {
+  fishType: string;
+  location: string;
+  weight: number;
+  captureData: Date;
+}
+
+@Component({
+  selector: 'app-create-capture',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    DialogModule,
+    ButtonModule,
+    InputTextModule,
+    InputNumberModule,
+    DatePickerModule,
+    ToastModule
+  ],
+  providers: [MessageService],
+  templateUrl: './create-capture.html',
+  styleUrls: ['./create-capture.css']
+})
+export class CreateCaptureComponent {
+  displayDialog = false;
+  loading = false;
+  selectedDate?: Date;
+
+  newCapture: NewCapture = {
+    fishType: '',
+    location: '',
+    weight: 0,
+    captureData: new Date()
+  };
+
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService
+  ) {}
+
+  openDialog(): void {
+    this.displayDialog = true;
+    this.resetForm();
+  }
+
+  resetForm(): void {
+    this.newCapture = {
+      fishType: '',
+      location: '',
+      weight: 0,
+      captureData: new Date()
+    };
+  }
+
+  createCapture(): void {
+    if (!this.newCapture.fishType || this.newCapture.weight <= 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Advertencia',
+        detail: 'Por favor completa todos los campos obligatorios'
+      });
+      return;
+    }
+
+    this.loading = true;
+    this.http.post('http://localhost:8080/api/fish-captures', this.newCapture)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: '¡Captura registrada correctamente!'
+          });
+          this.displayDialog = false;
+          this.loading = false;
+          // Emitir evento para recargar la tabla (lo haremos con un EventEmitter)
+          window.location.reload(); // Por ahora recargamos la página
+        },
+        error: (err) => {
+          console.error('Error creando captura:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo registrar la captura'
+          });
+          this.loading = false;
+        }
+      });
+  }
+
+  dateCaptureToday(): Date{
+    return new Date();
+  }
+}

@@ -1,0 +1,216 @@
+<div class="profile-container">
+  <p-toast></p-toast>
+
+  <!-- Información del usuario -->
+  @if (user) {
+    <p-card class="profile-card">
+      <ng-template pTemplate="header">
+        <div class="profile-header">
+          <i class="pi pi-user" style="font-size: 4rem; color: #667eea;"></i>
+          <h2>Mi Perfil</h2>
+        </div>
+      </ng-template>
+
+      <div class="profile-info">
+        <div class="info-item">
+          <span class="label">Usuario:</span>
+          <span class="value">{{ user.username }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Email:</span>
+          <span class="value">{{ user.email }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Rol:</span>
+          <span class="value role-badge" [class]="'role-' + user.role.toLowerCase()">
+            {{ user.role }}
+          </span>
+        </div>
+        <div class="info-item">
+          <span class="label">Cuenta creada:</span>
+          <span class="value">{{ user.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        @if (user.lastLoginAt) {
+          <div class="info-item">
+            <span class="label">Último acceso:</span>
+            <span class="value">{{ user.lastLoginAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        }
+      </div>
+    </p-card>
+  }
+
+  <!-- Mis capturas -->
+  <p-card class="captures-card">
+    <ng-template pTemplate="header">
+      <div class="captures-header">
+        <h3>🎣 Mis Capturas</h3>
+        <span class="captures-count">{{ myCaptures.length }} captura(s)</span>
+      </div>
+    </ng-template>
+
+    <p-table
+      [value]="myCaptures"
+      [loading]="loading"
+      [rows]="10"
+      [paginator]="true"
+      [rowsPerPageOptions]="[5,10,20]"
+      styleClass="p-datatable-sm">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo de Pez</th>
+          <th>Ubicación</th>
+          <th>Peso (kg)</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-capture>
+        <tr>
+          <td>{{ capture.captureData | date:'dd/MM/yyyy' }}</td>
+          <td>{{ capture.fishType }}</td>
+          <td>{{ capture.location || '-' }}</td>
+          <td>{{ capture.weight }}</td>
+          <td>
+            <p-button
+              icon="pi pi-pencil"
+              [rounded]="true"
+              [text]="true"
+              severity="info"
+              (onClick)="openEditDialog(capture)"
+              pTooltip="Editar">
+            </p-button>
+            <p-button
+              icon="pi pi-trash"
+              [rounded]="true"
+              [text]="true"
+              severity="danger"
+              (onClick)="openDeleteDialog(capture)"
+              pTooltip="Eliminar">
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="no-data">
+            <i class="pi pi-inbox" style="font-size: 2rem;"></i>
+            <p>No tienes capturas registradas aún</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <!-- Dialog para editar captura -->
+  <p-dialog
+    [(visible)]="displayEditDialog"
+    header="Editar Captura"
+    [modal]="true"
+    [style]="{width: '500px'}"
+    [draggable]="false"
+    [resizable]="false">
+
+    @if (editingCapture) {
+      <div class="dialog-content">
+        <div class="field">
+          <label for="fishType">Tipo de Pez *</label>
+          <input
+            pInputText
+            id="fishType"
+            [(ngModel)]="editingCapture.fishType"
+            class="w-full" />
+        </div>
+
+        <div class="field">
+          <label for="location">Ubicación</label>
+          <input
+            pInputText
+            id="location"
+            [(ngModel)]="editingCapture.location"
+            class="w-full" />
+        </div>
+
+        <div class="field">
+          <label for="weight">Peso (kg) *</label>
+          <p-inputNumber
+            id="weight"
+            [(ngModel)]="editingCapture.weight"
+            [minFractionDigits]="1"
+            [maxFractionDigits]="2"
+            [min]="0"
+            suffix=" kg"
+            class="w-full">
+          </p-inputNumber>
+        </div>
+
+        <div class="field">
+          <label for="captureDate">Fecha de Captura *</label>
+          <p-datePicker
+            id="captureDate"
+            [(ngModel)]="editingCapture.captureData"
+            dateFormat="dd/mm/yy"
+            [showIcon]="true"
+            [iconDisplay]="'input'"
+            class="w-full">
+          </p-datePicker>
+        </div>
+      </div>
+    }
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        (onClick)="displayEditDialog = false"
+        [text]="true">
+      </p-button>
+      <p-button
+        label="Guardar"
+        icon="pi pi-check"
+        (onClick)="saveCapture()"
+        [loading]="loading">
+      </p-button>
+    </ng-template>
+  </p-dialog>
+
+  <!-- Dialog para confirmar eliminación -->
+  <p-dialog
+    [(visible)]="displayDeleteDialog"
+    header="Confirmar Eliminación"
+    [modal]="true"
+    [style]="{width: '400px'}"
+    [draggable]="false"
+    [resizable]="false">
+
+    @if (deletingCapture) {
+      <div class="delete-content">
+        <i class="pi pi-exclamation-triangle" style="font-size: 3rem; color: #f59e0b;"></i>
+        <p>¿Estás seguro de que deseas eliminar esta captura?</p>
+        <div class="delete-info">
+          <strong>{{ deletingCapture.fishType }}</strong> - {{ deletingCapture.weight }} kg
+        </div>
+        <p class="warning-text">Esta acción no se puede deshacer.</p>
+      </div>
+    }
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        (onClick)="displayDeleteDialog = false"
+        [text]="true">
+      </p-button>
+      <p-button
+        label="Eliminar"
+        icon="pi pi-trash"
+        severity="danger"
+        (onClick)="confirmDelete()"
+        [loading]="loading">
+      </p-button>
+    </ng-template>
+  </p-dialog>
+</div>

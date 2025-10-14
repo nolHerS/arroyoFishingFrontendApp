@@ -1,0 +1,146 @@
+/* Contenedor principal del login */
+.login-container {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e0f2fe 0%, #c7d2fe 100%);
+  padding: 2rem;
+}
+
+/* Tarjeta de login */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  overflow: hidden;
+  animation: fadeIn 0.6s ease;
+}
+
+/* Cabecera del login */
+.login-header {
+  text-align: center;
+  padding: 0.8rem 1rem; /* Reduce padding superior e inferior */
+  background: linear-gradient(135deg, #667eea 0%, #3b82f6 100%);
+  color: white;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+/* Icono */
+.login-header i {
+  font-size: 3rem;
+  margin-bottom: 0.3rem; /* Ajusta margen inferior del icono */
+}
+
+/* Título */
+.login-header h2 {
+  margin: 0.2rem 0; /* Reduce margen superior e inferior */
+  font-weight: 600;
+}
+
+/* Subtítulo / texto */
+.login-header p {
+  margin: 0; /* Elimina margen por defecto */
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+
+/* Formulario */
+form {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Grupos de formulario */
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.4rem;
+}
+
+/* Contenedor input + icono */
+.p-input-icon-left,
+.p-input-icon-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Inputs */
+.p-input-icon-left input,
+.p-input-icon-right input,
+.p-password input {
+  flex: 1;
+  border-radius: 8px !important;
+  padding: 0.6rem 0.8rem !important;
+  font-size: 0.95rem;
+  border: 1px solid #cbd5e1 !important;
+  transition: all 0.3s ease;
+}
+
+.p-input-icon-left i,
+.p-input-icon-right i {
+  color: #3b82f6;
+  font-size: 1rem;
+}
+
+/* Botón principal */
+:host ::ng-deep .p-button {
+  width: 100%;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+:host ::ng-deep .p-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
+}
+
+/* Mensaje de error */
+:host ::ng-deep .p-message {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+/* Footer */
+.login-footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  border-radius: 1ch;
+}
+
+.login-footer a {
+  color: #3b82f6;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-card { padding: 0.5rem; }
+  form { padding: 1rem; }
+}

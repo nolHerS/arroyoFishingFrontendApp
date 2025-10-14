@@ -3,8 +3,7 @@
   <nav class="navbar">
     <div class="navbar-content">
       <div class="navbar-brand">
-        <i class="pi pi-github" style="font-size: 1.5rem;"></i>
-        <h1>🎣 Captura de Peces</h1>
+        <h1>🦐​​ Captura de Peces</h1>
       </div>
 
       <div class="navbar-menu">
@@ -12,7 +11,7 @@
           <i class="pi pi-table"></i> Capturas
         </a>
 
-        <ng-container *ngIf="isAuthenticated$ | async; else notAuthenticated">
+        @if (isAuthenticated$ | async) {
           <a routerLink="/perfil" routerLinkActive="active" class="nav-link">
             <i class="pi pi-user"></i> Perfil
           </a>
@@ -23,16 +22,14 @@
               <i class="pi pi-sign-out"></i> Salir
             </button>
           </div>
-        </ng-container>
-
-        <ng-template #notAuthenticated>
+        } @else {
           <a routerLink="/login" routerLinkActive="active" class="nav-link">
             <i class="pi pi-sign-in"></i> Iniciar Sesión
           </a>
           <a routerLink="/register" routerLinkActive="active" class="nav-link register-link">
             <i class="pi pi-user-plus"></i> Registrarse
           </a>
-        </ng-template>
+        }
       </div>
     </div>
   </nav>
@@ -40,5 +37,10 @@
   <!-- Contenido principal -->
   <main class="main-content">
     <router-outlet></router-outlet>
+
+    <!-- Botón flotante para crear captura (solo si está autenticado) -->
+    @if (isAuthenticated$ | async) {
+      <app-create-capture></app-create-capture>
+    }
   </main>
 </div>
