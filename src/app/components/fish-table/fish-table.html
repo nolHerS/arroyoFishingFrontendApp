@@ -97,14 +97,10 @@
       </p-autoComplete>
     </div>
 
-    <p-button icon="pi pi-filter-slash"
-            [raised]="true"
-            [style]="{
-              'margin-top' : '5px',
-              'margin-left' : '4px',
-              'background-color' : '#34d399'
-            }"
-            (click)="clearFilters()"/>
+  <button class="animated-button" (click)="clearFilters()">
+  <span class="pi pi-filter-slash"></span>
+
+</button>
   </div>
 </div>
 
