@@ -28,7 +28,7 @@ import { LoginRequest } from '../../models/auth-user';
 })
 export class LoginComponent {
   credentials: LoginRequest = {
-    username: '',
+    identifier: '',
     password: ''
   };
 
@@ -42,7 +42,7 @@ export class LoginComponent {
   ) {}
 
   onLogin(): void {
-    if (!this.credentials.username || !this.credentials.password) {
+    if (!this.credentials.identifier || !this.credentials.password) {
       this.errorMessage = 'Por favor, completa todos los campos';
       return;
     }

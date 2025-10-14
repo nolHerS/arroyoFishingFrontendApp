@@ -1,16 +1,20 @@
 <p-toast></p-toast>
 
 <!-- Botón flotante para crear captura -->
-<p-button
-  icon="pi pi-plus"
-  [rounded]="true"
-  severity="success"
-  size="large"
-  (onClick)="openDialog()"
-  class="create-button"
-  pTooltip="Nueva Captura"
-  tooltipPosition="left">
-</p-button>
+<div class="floating-action">
+  <p-button
+    icon="pi pi-camera"
+    rounded="true"
+    severity="success"
+    size="large"
+    (onClick)="openDialog()"
+    class="create-button"
+    pTooltip="Nueva Captura"
+    tooltipPosition="left">
+  </p-button>
+  <span class="action-label">Nueva captura</span>
+</div>
+
 
 <!-- Dialog para crear captura -->
 <p-dialog
