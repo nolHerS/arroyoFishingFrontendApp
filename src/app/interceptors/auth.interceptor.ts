@@ -11,11 +11,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // URLs completamente públicas (sin token nunca)
   const alwaysPublicUrls = [
     '/api/auth/login',
-    '/api/auth/register'
+    '/api/auth/register',
+    '/api/auth/refresh'
   ];
 
-  // URLs públicas solo para GET
-  const publicGetUrls = [
+  // URLs públicas solo para GET (EXACTAS, sin parámetros adicionales)
+  const publicGetEndpoints = [
     '/api/fish-captures',
     '/api/users'
   ];
@@ -30,7 +31,18 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   // Verificar si es una URL pública solo para GET
-  const isPublicGet = publicGetUrls.some(url => req.url.includes(url)) && req.method === 'GET';
+  // IMPORTANTE: Solo debe ser público si la URL termina EXACTAMENTE en el endpoint
+  const isPublicGet = req.method === 'GET' && publicGetEndpoints.some(endpoint => {
+    try {
+      const url = new URL(req.url);
+      // La URL debe terminar exactamente en el endpoint, sin /algo/mas
+      return url.pathname === endpoint;
+    } catch {
+      // Si falla el parseo, usar includes como fallback
+      return req.url.endsWith(endpoint);
+    }
+  });
+
   console.log('🔍 INTERCEPTOR - Es public GET?:', isPublicGet);
 
   if (isPublicGet) {
@@ -41,7 +53,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // Para todas las demás peticiones, añadir token si existe
   const token = authService.getToken();
   console.log('🔍 INTERCEPTOR - Token:', token ? `✅ SÍ (primeros chars: ${token.substring(0, 20)}...)` : '❌ NO');
-console.log('🔍 INTERCEPTOR - Token completo:', token); // AÑADIR ESTA LÍNEA PARA VER EL TOKEN
 
   if (token) {
     console.log('✅ INTERCEPTOR - Añadiendo header Authorization');

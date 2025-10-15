@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -35,9 +35,12 @@ interface NewCapture {
   styleUrls: ['./create-capture.css']
 })
 export class CreateCaptureComponent {
+
+   @Output() captureCreated = new EventEmitter<void>(); // AÑADIR ESTA LÍNEA
+
   displayDialog = false;
   loading = false;
-  selectedDate?: Date;
+  maxDate: Date = new Date();
 
   newCapture: NewCapture = {
     fishType: '',
@@ -65,7 +68,7 @@ export class CreateCaptureComponent {
     };
   }
 
-  createCapture(): void {
+   createCapture(): void {
     if (!this.newCapture.fishType || this.newCapture.weight <= 0) {
       this.messageService.add({
         severity: 'warn',
@@ -82,26 +85,25 @@ export class CreateCaptureComponent {
           this.messageService.add({
             severity: 'success',
             summary: 'Éxito',
-            detail: '¡Captura registrada correctamente!'
+            detail: '¡Captura registrada correctamente!',
+            life: 3000
           });
           this.displayDialog = false;
           this.loading = false;
-          // Emitir evento para recargar la tabla (lo haremos con un EventEmitter)
-          window.location.reload(); // Por ahora recargamos la página
+
+          // REEMPLAZAR window.location.reload() POR:
+          this.captureCreated.emit();
         },
         error: (err) => {
           console.error('Error creando captura:', err);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'No se pudo registrar la captura'
+            detail: 'No se pudo registrar la captura',
+            life: 3000
           });
           this.loading = false;
         }
       });
-  }
-
-  dateCaptureToday(): Date{
-    return new Date();
   }
 }

@@ -8,7 +8,7 @@ import { forkJoin } from 'rxjs';
 import { FishCapture } from '../../models/fish-capture';
 import { User } from '../../models/user';
 import { UserFilterPipe } from '../../pipes/user-filter.pipe';
-import { Button } from "primeng/button";
+import { CreateCaptureComponent } from '../create-capture/create-capture';
 
 @Component({
   selector: 'app-fish-table',
@@ -19,7 +19,7 @@ import { Button } from "primeng/button";
     AutoCompleteModule,
     FormsModule,
     UserFilterPipe,
-    Button
+    CreateCaptureComponent
   ],
   templateUrl: './fish-table.html',
   styleUrls: ['./fish-table.css'],
@@ -108,5 +108,10 @@ export class FishTable implements OnInit {
     this.fishTypeSuggestions = [...this.fishTypeOptions];
     this.locationSuggestions = [...this.locationOptions];
     this.userSuggestions = [...this.userOptions];
+  }
+
+  onCaptureCreated(): void {
+    console.log('🎣 Nueva captura creada, recargando tabla...');
+    this.loadData(); // Recarga solo los datos de la tabla
   }
 }

@@ -4,7 +4,6 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { AuthUser } from './models/auth-user';
-import { CreateCaptureComponent } from './components/create-capture/create-capture';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +12,7 @@ import { CreateCaptureComponent } from './components/create-capture/create-captu
     CommonModule,
     RouterOutlet,
     RouterLink,
-    RouterLinkActive,
-    CreateCaptureComponent
+    RouterLinkActive
 ],
   templateUrl: './app.html',
   styleUrls: ['./app.css']

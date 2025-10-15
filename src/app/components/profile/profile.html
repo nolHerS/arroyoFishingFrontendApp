@@ -28,7 +28,7 @@
         </div>
         <div class="info-item">
           <span class="label">Cuenta creada:</span>
-          <span class="value">{{ user.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          <span class="value">{{ user.createdAt | date:'dd/MM/yyyy' }}</span>
         </div>
         @if (user.lastLoginAt) {
           <div class="info-item">

@@ -37,10 +37,5 @@
   <!-- Contenido principal -->
   <main class="main-content">
     <router-outlet></router-outlet>
-
-    <!-- Botón flotante para crear captura (solo si está autenticado) -->
-    @if (isAuthenticated$ | async) {
-      <app-create-capture></app-create-capture>
-    }
   </main>
 </div>
