@@ -12,7 +12,7 @@ export class AuthService {
 
   private apiUrl = environment.apiUrl;
 
-  private readonly API_URL = '${this.apiUrl}/api/auth';
+  private readonly API_URL = `${this.apiUrl}/api/auth`;
 
   // Estado de autenticación reactivo
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);

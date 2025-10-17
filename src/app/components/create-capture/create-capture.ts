@@ -82,7 +82,7 @@ export class CreateCaptureComponent {
     }
 
     this.loading = true;
-    this.http.post('${this.apiUrl}/api/fish-captures', this.newCapture)
+    this.http.post(`${this.apiUrl}/api/fish-captures`, this.newCapture)
       .subscribe({
         next: () => {
           this.messageService.add({
