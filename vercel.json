@@ -1,16 +1,10 @@
 {
     "version": 2,
     "public": false,
-    "builds": [
+    "rewrites": [
         {
-            "src": "dist/arroyo-fishing-frontend-app/**/*",
-            "use": "@vercel/static"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/index.html"
+            "source": "/(.*)",
+            "destination": "/index.html"
         }
     ],
     "headers": [
