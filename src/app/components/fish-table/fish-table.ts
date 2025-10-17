@@ -9,6 +9,7 @@ import { FishCapture } from '../../models/fish-capture';
 import { User } from '../../models/user';
 import { UserFilterPipe } from '../../pipes/user-filter.pipe';
 import { CreateCaptureComponent } from '../create-capture/create-capture';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-fish-table',
@@ -27,6 +28,8 @@ import { CreateCaptureComponent } from '../create-capture/create-capture';
 export class FishTable implements OnInit {
   captures: FishCapture[] = [];
   users: User[] = [];
+
+  private apiUrl = environment.apiUrl;
 
   // Filtros
   fishTypeSearch: string = '';
@@ -53,8 +56,8 @@ export class FishTable implements OnInit {
     console.log('FishTable inicializado ✅');
 
     forkJoin({
-      users: this.http.get<User[]>('http://localhost:8080/api/users'),
-      captures: this.http.get<FishCapture[]>('http://localhost:8080/api/fish-captures')
+      users: this.http.get<User[]>('${this.apiUrl}/api/users'),
+      captures: this.http.get<FishCapture[]>('${this.apiUrl}/api/fish-captures')
     }).subscribe({
       next: ({ users, captures }) => {
         console.log('Usuarios cargados:', users);

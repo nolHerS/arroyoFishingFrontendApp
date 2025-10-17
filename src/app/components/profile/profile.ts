@@ -14,6 +14,7 @@ import { AuthUser } from '../../models/auth-user';
 import { FishCapture } from '../../models/fish-capture';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -38,6 +39,8 @@ export class ProfileComponent implements OnInit {
   user: AuthUser | null = null;
   myCaptures: FishCapture[] = [];
   loading = false;
+
+  private apiUrl = environment.apiUrl;
 
   // Dialog para editar captura
   displayEditDialog = false;
@@ -64,7 +67,7 @@ export class ProfileComponent implements OnInit {
     if (!this.user) return;
 
     this.loading = true;
-    this.http.get<FishCapture[]>(`http://localhost:8080/api/fish-captures/user/${this.user.username}`)
+    this.http.get<FishCapture[]>(`${this.apiUrl}/api/fish-captures/user/${this.user.username}`)
       .subscribe({
         next: (captures) => {
           this.myCaptures = captures;
@@ -92,7 +95,7 @@ export class ProfileComponent implements OnInit {
 
     this.loading = true;
     this.http.put<FishCapture>(
-      `http://localhost:8080/api/fish-captures/${this.editingCapture.id}`,
+      `${this.apiUrl}/api/fish-captures/${this.editingCapture.id}`,
       this.editingCapture
     ).subscribe({
       next: () => {
@@ -125,7 +128,7 @@ export class ProfileComponent implements OnInit {
     if (!this.deletingCapture) return;
 
     this.loading = true;
-    this.http.delete(`http://localhost:8080/api/fish-captures/${this.deletingCapture.id}`)
+    this.http.delete(`${this.apiUrl}/api/fish-captures/${this.deletingCapture.id}`)
       .subscribe({
         next: () => {
           this.messageService.add({

@@ -9,6 +9,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DatePickerModule } from 'primeng/datepicker';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { environment } from '../../../environments/environment';
 
 interface NewCapture {
   fishType: string;
@@ -35,6 +36,8 @@ interface NewCapture {
   styleUrls: ['./create-capture.css']
 })
 export class CreateCaptureComponent {
+
+  private apiUrl = environment.apiUrl;
 
    @Output() captureCreated = new EventEmitter<void>(); // AÑADIR ESTA LÍNEA
 
@@ -79,7 +82,7 @@ export class CreateCaptureComponent {
     }
 
     this.loading = true;
-    this.http.post('http://localhost:8080/api/fish-captures', this.newCapture)
+    this.http.post('${this.apiUrl}/api/fish-captures', this.newCapture)
       .subscribe({
         next: () => {
           this.messageService.add({

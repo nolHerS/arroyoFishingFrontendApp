@@ -3,12 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthUser, LoginRequest, LoginResponse, RegisterRequest } from '../models/auth-user';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:8080/api/auth';
+
+  private apiUrl = environment.apiUrl;
+
+  private readonly API_URL = '${this.apiUrl}/api/auth';
 
   // Estado de autenticación reactivo
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
