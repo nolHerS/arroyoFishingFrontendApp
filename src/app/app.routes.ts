@@ -25,6 +25,10 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+  path: 'test-gallery',
+  loadComponent: () => import('./components/test-gallery/test-gallery').then(m => m.TestGalleryComponent)
+  },
+  {
     path: '**',
     redirectTo: 'capturas'
   }
