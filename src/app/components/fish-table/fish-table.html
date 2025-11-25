@@ -1,144 +1,154 @@
-<div class="fish-table-container">
-  <h2>📊 Capturas de Peces</h2>
+<div class="bento-container">
+  <!-- Header con filtros -->
+  <div class="bento-header">
+    <h2>🎣 Mis Capturas</h2>
 
-  <div class="filters-container">
-  <div class="filters">
+    <div class="filters-row">
+      <!-- Filtro Tipo de pez -->
+      <div class="filter-chip">
+        <i class="pi pi-search"></i>
+        <p-autoComplete
+          [(ngModel)]="fishTypeSearch"
+          [suggestions]="fishTypeSuggestions"
+          (completeMethod)="filterFishType($event)"
+          (onSelect)="applyFilters()"
+          (onClear)="applyFilters()"
+          placeholder="Tipo de pez"
+          [dropdown]="true"
+          [forceSelection]="false"
+          styleClass="filter-autocomplete">
+        </p-autoComplete>
+      </div>
 
-    <!-- Tipo de pez -->
-    <div class="filter-item">
-      <i class="pi pi-list"></i>
-      <p-autoComplete
-        [(ngModel)]="fishTypeSearch"
-        [suggestions]="fishTypeSuggestions"
-        (completeMethod)="filterFishType($event)"
-        placeholder="Tipo de pez​"
-        [dropdown]="true"
-        [forceSelection]="false"
-        [minLength]="0"
-        [autoHighlight]="true"
-        [panelStyle]="{
-          'margin-top' : '8px',
-          'background-color': 'rgba(204,229,255,0.95)',
-          'border': '1px solid #ccc',
-          'border-radius': '8px',
-          'box-shadow': '0 4px 8px rgba(0,0,0,0.1)',
-          'max-height': '250px',
-          'overflow-y': 'auto'
-        }">
+      <!-- Filtro Ubicación -->
+      <div class="filter-chip">
+        <i class="pi pi-map-marker"></i>
+        <p-autoComplete
+          [(ngModel)]="locationSearch"
+          [suggestions]="locationSuggestions"
+          (completeMethod)="filterLocation($event)"
+          (onSelect)="applyFilters()"
+          (onClear)="applyFilters()"
+          placeholder="Ubicación"
+          [dropdown]="true"
+          [forceSelection]="false"
+          styleClass="filter-autocomplete">
+        </p-autoComplete>
+      </div>
 
-        <ng-template let-fish #item>
-          <div class="autocomplete-item-minimal">
-            {{ fish }}
+      <!-- Filtro Usuario -->
+      <div class="filter-chip">
+        <i class="pi pi-user"></i>
+        <p-autoComplete
+          [(ngModel)]="userSearch"
+          [suggestions]="userSuggestions"
+          (completeMethod)="filterUser($event)"
+          (onSelect)="applyFilters()"
+          (onClear)="applyFilters()"
+          placeholder="Usuario"
+          [dropdown]="true"
+          [forceSelection]="false"
+          styleClass="filter-autocomplete">
+        </p-autoComplete>
+      </div>
+
+      <button
+        class="clear-filters-btn"
+        (click)="clearFilters()"
+        *ngIf="fishTypeSearch || locationSearch || userSearch">
+        <i class="pi pi-filter-slash"></i>
+        Limpiar
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading skeleton -->
+  <div class="bento-grid" *ngIf="loading">
+    <div class="bento-card skeleton" *ngFor="let item of [1,2,3,4,5,6]">
+      <p-skeleton width="100%" height="200px" borderRadius="12px"></p-skeleton>
+      <div class="card-content">
+        <p-skeleton width="60%" height="1.5rem"></p-skeleton>
+        <p-skeleton width="40%" height="1rem" styleClass="mt-2"></p-skeleton>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bento Grid -->
+  <div class="bento-grid" *ngIf="!loading">
+    <div
+      class="bento-card"
+      *ngFor="let capture of filteredCaptures"
+      [class.has-images]="capture.images.length > 0">
+
+      <!-- Imagen principal -->
+      <div class="card-image-container">
+        <img
+          [src]="getMainImage(capture)"
+          [alt]="capture.fishType"
+          class="card-image"
+          loading="lazy" />
+
+        <!-- Badge de imágenes -->
+        <div class="image-count-badge" *ngIf="capture.images.length > 1">
+          <i class="pi pi-images"></i>
+          {{ capture.images.length }}
+        </div>
+
+        <!-- Overlay con info rápida -->
+        <div class="card-overlay">
+          <span class="overlay-weight">{{ capture.weight }} kg</span>
+        </div>
+      </div>
+
+      <!-- Contenido de la card -->
+      <div class="card-content">
+        <div class="card-header">
+          <h3 class="card-title">{{ capture.fishType }}</h3>
+          <span class="card-date">
+            <i class="pi pi-calendar"></i>
+            {{ capture.captureData | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+
+        <div class="card-details">
+          <div class="detail-item" *ngIf="capture.location">
+            <i class="pi pi-map-marker"></i>
+            <span>{{ capture.location }}</span>
           </div>
-        </ng-template>
 
-      </p-autoComplete>
+          <div class="detail-item">
+            <i class="pi pi-user"></i>
+            <span>{{ capture.userName }}</span>
+          </div>
+        </div>
+
+        <!-- Miniaturas de imágenes adicionales -->
+        <div class="image-thumbnails" *ngIf="capture.images.length > 1">
+          <img
+            *ngFor="let img of capture.images.slice(1, 4); let i = index"
+            [src]="img.thumbnailUrl"
+            [alt]="'Imagen ' + (i + 2)"
+            class="thumbnail"
+            loading="lazy" />
+          <div class="more-images" *ngIf="capture.images.length > 4">
+            +{{ capture.images.length - 4 }}
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Ubicación -->
-    <div class="filter-item">
-      <i class="pi pi-map-marker"></i>
-      <p-autoComplete
-        [(ngModel)]="locationSearch"
-        [suggestions]="locationSuggestions"
-        (completeMethod)="filterLocation($event)"
-        placeholder="Ubicación"
-        [dropdown]="true"
-        [forceSelection]="false"
-        [minLength]="0"
-        [autoHighlight]="true"
-        [panelStyle]="{
-          'margin-top' : '8px',
-          'background-color': 'rgba(204,229,255,0.95)',
-          'border': '1px solid #ccc',
-          'border-radius': '8px',
-          'box-shadow': '0 4px 8px rgba(0,0,0,0.1)',
-          'max-height': '250px',
-          'overflow-y': 'auto'
-        }">
-
-        <ng-template let-location #item>
-          <div class="autocomplete-item-minimal">
-            {{ location }}
-          </div>
-        </ng-template>
-
-      </p-autoComplete>
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="filteredCaptures.length === 0">
+      <i class="pi pi-inbox empty-icon"></i>
+      <h3>No hay capturas que mostrar</h3>
+      <p *ngIf="fishTypeSearch || locationSearch || userSearch">
+        Intenta ajustar los filtros
+      </p>
+      <p *ngIf="!fishTypeSearch && !locationSearch && !userSearch">
+        ¡Registra tu primera captura!
+      </p>
     </div>
-
-    <!-- Usuario -->
-    <div class="filter-item">
-      <i class="pi pi-user"></i>
-      <p-autoComplete
-        [(ngModel)]="userSearch"
-        [suggestions]="userSuggestions"
-        (completeMethod)="filterUser($event)"
-        placeholder="Usuario"
-        [dropdown]="true"
-        [forceSelection]="false"
-        [minLength]="0"
-        [autoHighlight]="true"
-        [panelStyle]="{
-          'margin-top' : '8px',
-          'background-color': 'rgba(204,229,255,0.95)',
-          'border': '1px solid #ccc',
-          'border-radius': '8px',
-          'box-shadow': '0 4px 8px rgba(0,0,0,0.1)',
-          'max-height': '250px',
-          'overflow-y': 'auto'
-        }">
-
-        <ng-template let-user #item>
-          <div class="autocomplete-item-minimal">
-            {{ user }}
-          </div>
-        </ng-template>
-
-      </p-autoComplete>
-    </div>
-
-  <button class="animated-button" (click)="clearFilters()">
-  <span class="pi pi-filter-slash"></span>
-
-</button>
   </div>
 </div>
 
-  <p-table [value]="captures | userFilter:users:userSearch"
-
-           [rows]="10"
-           [rowsPerPageOptions]="[5,10,20]"
-           scrollable="true"
-           scrollHeight="400px"
-           styleClass="fish-table">
-    <ng-template #header>
-      <tr>
-        <th>Fecha de captura</th>
-        <th>Tipo de pez</th>
-        <th>Ubicación</th>
-        <th>Peso (kg)</th>
-        <th>Usuario</th>
-      </tr>
-    </ng-template>
-
-    <ng-template #body let-capture>
-  @if (capture.fishType.toLowerCase().includes(fishTypeSearch.toLowerCase()) &&
-       (!locationSearch || (capture.location || '').toLowerCase().includes(locationSearch.toLowerCase()))) {
-    <tr>
-      <td>{{ capture.captureData | date:'dd/MM/yyyy' }}</td>
-      <td>{{ capture.fishType }}</td>
-      <td>{{ capture.location || '-' }}</td>
-      <td>{{ capture.weight }}</td>
-      <td>{{ getUserName(capture.userId) }}</td>
-    </tr>
-  }
-</ng-template>
-
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="6" class="no-data">No hay capturas registradas 😢</td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
 <app-create-capture (captureCreated)="onCaptureCreated()"></app-create-capture>

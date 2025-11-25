@@ -1,14 +1,4 @@
-/* === Contenedor general del botón y etiqueta === */
-.floating-action {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  z-index: 999;
-}
-
+/* Botón flotante */
 .floating-button {
   position: fixed;
   bottom: 2rem;
@@ -24,19 +14,20 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   z-index: 999;
   white-space: nowrap;
-  transition: all 0.2s ease; /* transiciones suaves */
+  transition: all 0.2s ease;
 }
 
 .floating-button:hover {
-  transform: translateY(-3px); /* sube ligeramente al pasar el ratón */
+  transform: translateY(-3px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-  background-color: #16a34a; /* verde más oscuro */
+  background-color: #16a34a;
 }
-
 
 /* Dialog content */
 .dialog-content {
   padding: 1rem 0;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .field {
@@ -50,6 +41,19 @@
   font-weight: 600;
 }
 
+/* Sección de imágenes */
+.images-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.images-section label {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Utilidades */
 .w-full {
   width: 100%;
 }
@@ -64,12 +68,35 @@
   width: 100%;
 }
 
+/* Scrollbar personalizado para el dialog */
+.dialog-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dialog-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.dialog-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.dialog-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-  :host ::ng-deep .create-button {
+  .floating-button {
     bottom: 1rem;
     right: 1rem;
-    width: 50px;
-    height: 50px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  :host ::ng-deep p-dialog .p-dialog {
+    width: 95vw !important;
   }
 }

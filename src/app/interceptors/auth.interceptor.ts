@@ -21,6 +21,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     '/api/users'
   ];
 
+  // Patrones de URLs públicas para GET (con wildcards)
+  const publicGetPatterns = [
+    /\/api\/captures\/\d+\/images$/,           // GET /api/captures/{id}/images
+    /\/api\/captures\/images\/\d+$/,           // GET /api/captures/images/{id}
+    /\/api\/captures\/\d+\/images\/count$/,    // GET /api/captures/{id}/images/count
+    /\/api\/fish-captures\/user\/[\w-]+$/      // GET /api/fish-captures/user/{username}
+  ];
+
   // Verificar si es una URL completamente pública
   const isAlwaysPublic = alwaysPublicUrls.some(url => req.url.includes(url));
   console.log('🔍 INTERCEPTOR - Es always public?:', isAlwaysPublic);
@@ -31,17 +39,24 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   // Verificar si es una URL pública solo para GET
-  // IMPORTANTE: Solo debe ser público si la URL termina EXACTAMENTE en el endpoint
-  const isPublicGet = req.method === 'GET' && publicGetEndpoints.some(endpoint => {
-    try {
-      const url = new URL(req.url);
-      // La URL debe terminar exactamente en el endpoint, sin /algo/mas
-      return url.pathname === endpoint;
-    } catch {
-      // Si falla el parseo, usar includes como fallback
-      return req.url.endsWith(endpoint);
-    }
-  });
+  const isPublicGet = req.method === 'GET' && (
+    publicGetEndpoints.some(endpoint => {
+      try {
+        const url = new URL(req.url);
+        return url.pathname === endpoint;
+      } catch {
+        return req.url.endsWith(endpoint);
+      }
+    }) ||
+    publicGetPatterns.some(pattern => {
+      try {
+        const url = new URL(req.url);
+        return pattern.test(url.pathname);
+      } catch {
+        return pattern.test(req.url);
+      }
+    })
+  );
 
   console.log('🔍 INTERCEPTOR - Es public GET?:', isPublicGet);
 

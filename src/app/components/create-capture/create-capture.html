@@ -2,21 +2,20 @@
 
 <!-- Botón flotante para crear captura -->
 <button class="floating-button" (click)="openDialog()">
- 🎣​ Nueva Captura
+  🎣 Nueva Captura
 </button>
-
-
 
 <!-- Dialog para crear captura -->
 <p-dialog
   [(visible)]="displayDialog"
   header="🎣 Registrar Nueva Captura"
   [modal]="true"
-  [style]="{width: '500px'}"
+  [style]="{width: '600px', maxHeight: '90vh'}"
   [draggable]="false"
   [resizable]="false">
 
   <div class="dialog-content">
+    <!-- Datos de la captura -->
     <div class="field">
       <label for="fishType">Tipo de Pez *</label>
       <input
@@ -63,6 +62,15 @@
         class="w-full">
       </p-datePicker>
     </div>
+
+    <!-- Sección de imágenes -->
+    <div class="field images-section">
+      <label>📸 Imágenes (opcional)</label>
+      <app-image-upload
+        [maxImages]="10"
+        (imagesSelected)="onImagesSelected($event)">
+      </app-image-upload>
+    </div>
   </div>
 
   <ng-template pTemplate="footer">
@@ -70,7 +78,8 @@
       label="Cancelar"
       icon="pi pi-times"
       (onClick)="displayDialog = false"
-      [text]="true">
+      [text]="true"
+      [disabled]="loading">
     </p-button>
     <p-button
       label="Registrar Captura"
