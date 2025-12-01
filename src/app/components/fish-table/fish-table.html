@@ -7,55 +7,31 @@
       <!-- Filtro Tipo de pez -->
       <div class="filter-chip">
         <i class="pi pi-search"></i>
-        <p-autoComplete
-          [(ngModel)]="fishTypeSearch"
-          [suggestions]="fishTypeSuggestions"
-          (completeMethod)="filterFishType($event)"
-          (onSelect)="applyFilters()"
-          (onClear)="applyFilters()"
-          placeholder="Tipo de pez"
-          [dropdown]="true"
-          [forceSelection]="false"
-          styleClass="filter-autocomplete">
+        <p-autoComplete [(ngModel)]="fishTypeSearch" [suggestions]="fishTypeSuggestions"
+          (completeMethod)="filterFishType($event)" (onSelect)="applyFilters()" (onClear)="applyFilters()"
+          placeholder="Tipo de pez" [dropdown]="true" [forceSelection]="false" styleClass="filter-autocomplete">
         </p-autoComplete>
       </div>
 
       <!-- Filtro Ubicación -->
       <div class="filter-chip">
         <i class="pi pi-map-marker"></i>
-        <p-autoComplete
-          [(ngModel)]="locationSearch"
-          [suggestions]="locationSuggestions"
-          (completeMethod)="filterLocation($event)"
-          (onSelect)="applyFilters()"
-          (onClear)="applyFilters()"
-          placeholder="Ubicación"
-          [dropdown]="true"
-          [forceSelection]="false"
-          styleClass="filter-autocomplete">
+        <p-autoComplete [(ngModel)]="locationSearch" [suggestions]="locationSuggestions"
+          (completeMethod)="filterLocation($event)" (onSelect)="applyFilters()" (onClear)="applyFilters()"
+          placeholder="Ubicación" [dropdown]="true" [forceSelection]="false" styleClass="filter-autocomplete">
         </p-autoComplete>
       </div>
 
       <!-- Filtro Usuario -->
       <div class="filter-chip">
         <i class="pi pi-user"></i>
-        <p-autoComplete
-          [(ngModel)]="userSearch"
-          [suggestions]="userSuggestions"
-          (completeMethod)="filterUser($event)"
-          (onSelect)="applyFilters()"
-          (onClear)="applyFilters()"
-          placeholder="Usuario"
-          [dropdown]="true"
-          [forceSelection]="false"
-          styleClass="filter-autocomplete">
+        <p-autoComplete [(ngModel)]="userSearch" [suggestions]="userSuggestions" (completeMethod)="filterUser($event)"
+          (onSelect)="applyFilters()" (onClear)="applyFilters()" placeholder="Usuario" [dropdown]="true"
+          [forceSelection]="false" styleClass="filter-autocomplete">
         </p-autoComplete>
       </div>
 
-      <button
-        class="clear-filters-btn"
-        (click)="clearFilters()"
-        *ngIf="fishTypeSearch || locationSearch || userSearch">
+      <button class="clear-filters-btn" (click)="clearFilters()" *ngIf="fishTypeSearch || locationSearch || userSearch">
         <i class="pi pi-filter-slash"></i>
         Limpiar
       </button>
@@ -75,28 +51,16 @@
 
   <!-- Bento Grid -->
   <div class="bento-grid" *ngIf="!loading">
-    <div
-      class="bento-card"
-      *ngFor="let capture of filteredCaptures"
-      [class.has-images]="capture.images.length > 0">
+    <div class="bento-card" *ngFor="let capture of filteredCaptures" [class.has-images]="capture.images.length > 0">
 
       <!-- Imagen principal -->
       <div class="card-image-container">
-        <img
-          [src]="getMainImage(capture)"
-          [alt]="capture.fishType"
-          class="card-image"
-          loading="lazy" />
+        <img [src]="getMainImage(capture)" [alt]="capture.fishType" class="card-image" loading="lazy" (error)="onImageError($event)"/>
 
         <!-- Badge de imágenes -->
         <div class="image-count-badge" *ngIf="capture.images.length > 1">
           <i class="pi pi-images"></i>
           {{ capture.images.length }}
-        </div>
-
-        <!-- Overlay con info rápida -->
-        <div class="card-overlay">
-          <span class="overlay-weight">{{ capture.weight }} kg</span>
         </div>
       </div>
 
@@ -120,16 +84,19 @@
             <i class="pi pi-user"></i>
             <span>{{ capture.userName }}</span>
           </div>
+
+          <div class="detail-item">
+            <span class="card-weight">
+              <i class="pi pi-tag"></i>
+              {{ capture.weight }} kg
+            </span>
+          </div>
         </div>
 
         <!-- Miniaturas de imágenes adicionales -->
         <div class="image-thumbnails" *ngIf="capture.images.length > 1">
-          <img
-            *ngFor="let img of capture.images.slice(1, 4); let i = index"
-            [src]="img.thumbnailUrl"
-            [alt]="'Imagen ' + (i + 2)"
-            class="thumbnail"
-            loading="lazy" />
+          <img *ngFor="let img of capture.images.slice(1, 4); let i = index" [src]="img.thumbnailUrl"
+            [alt]="'Imagen ' + (i + 2)" class="thumbnail" loading="lazy" />
           <div class="more-images" *ngIf="capture.images.length > 4">
             +{{ capture.images.length - 4 }}
           </div>

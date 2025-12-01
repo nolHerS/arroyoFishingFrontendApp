@@ -40,6 +40,9 @@ export class FishTable implements OnInit {
 
   private apiUrl = environment.apiUrl;
 
+  // Imagen por defecto para capturas sin foto
+  private readonly DEFAULT_FISH_IMAGE = '/assets/placeholder-fish.png';
+
   // Filtros
   fishTypeSearch: string = '';
   locationSearch: string = '';
@@ -183,11 +186,27 @@ export class FishTable implements OnInit {
     this.loadData();
   }
 
-  // Método auxiliar para obtener la primera imagen o placeholder
+  /**
+   * Obtiene la imagen principal de la captura o una imagen por defecto
+   * @param capture Captura con imágenes
+   * @returns URL de la imagen a mostrar
+   */
   getMainImage(capture: CaptureWithImages): string {
+    // Si tiene imágenes, usar la primera
     if (capture.images && capture.images.length > 0) {
       return capture.images[0].thumbnailUrl || capture.images[0].originalUrl;
     }
-    return 'assets/placeholder-fish.jpg'; // Imagen por defecto
+
+    // Si no tiene imágenes, retornar imagen por defecto
+    return this.DEFAULT_FISH_IMAGE;
+  }
+
+  /**
+   * Maneja el error de carga de imagen
+   * @param event Evento de error
+   */
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = this.DEFAULT_FISH_IMAGE;
   }
 }
