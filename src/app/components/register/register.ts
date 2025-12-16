@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
@@ -14,7 +14,6 @@ import { RegisterRequest } from '../../models/auth-user';
   selector: 'app-register',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     CardModule,
     InputTextModule,
@@ -22,7 +21,7 @@ import { RegisterRequest } from '../../models/auth-user';
     ButtonModule,
     MessageModule,
     RouterLink
-  ],
+],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })

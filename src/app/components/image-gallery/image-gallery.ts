@@ -1,12 +1,12 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { CaptureImage } from '../../models/capture-image';
 import { CaptureImageService } from '../../services/capture-image.service';
 
 @Component({
   selector: 'app-image-gallery',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './image-gallery.html',
   styleUrls: ['./image-gallery.css']
 })

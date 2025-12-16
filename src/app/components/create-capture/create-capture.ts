@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DialogModule } from 'primeng/dialog';
@@ -26,7 +26,6 @@ interface NewCapture {
   selector: 'app-create-capture',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     DialogModule,
     ButtonModule,
@@ -35,7 +34,7 @@ interface NewCapture {
     DatePickerModule,
     ToastModule,
     ImageUploadComponent
-  ],
+],
   providers: [MessageService],
   templateUrl: './create-capture.html',
   styleUrls: ['./create-capture.css']

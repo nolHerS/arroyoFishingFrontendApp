@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { MessageService } from 'primeng/api';
@@ -14,7 +14,7 @@ interface ImagePreview {
 @Component({
   selector: 'app-image-upload',
   standalone: true,
-  imports: [CommonModule, ButtonModule, ProgressBarModule],
+  imports: [ButtonModule, ProgressBarModule],
   template: `
     <div class="upload-container">
       <!-- Drag & Drop Area -->
@@ -25,12 +25,12 @@ interface ImagePreview {
         (dragover)="onDragOver($event)"
         (dragleave)="onDragLeave($event)"
         (drop)="onDrop($event)">
-
+    
         <i class="pi pi-cloud-upload" style="font-size: 3rem; color: #94a3b8;"></i>
         <p class="drop-text">Arrastra imágenes aquí o haz clic para seleccionar</p>
         <p class="drop-hint">Máximo {{ maxImages }} imágenes • PNG, JPG, JPEG • Max {{ maxSizeMB }}MB c/u</p>
       </div>
-
+    
       <!-- Hidden file input -->
       <input
         #fileInput
@@ -39,36 +39,44 @@ interface ImagePreview {
         accept="image/png,image/jpeg,image/jpg"
         (change)="onFileSelect($event)"
         style="display: none;" />
-
-      <!-- Preview Grid -->
-      <div class="preview-grid" *ngIf="imagePreviews.length > 0">
-        <div class="preview-card" *ngFor="let preview of imagePreviews">
-          <img [src]="preview.url" [alt]="preview.file.name" />
-          <div class="preview-overlay">
-            <span class="preview-name">{{ preview.file.name }}</span>
-            <span class="preview-size">{{ formatFileSize(preview.file.size) }}</span>
+    
+        <!-- Preview Grid -->
+        @if (imagePreviews.length > 0) {
+          <div class="preview-grid">
+            @for (preview of imagePreviews; track preview) {
+              <div class="preview-card">
+                <img [src]="preview.url" [alt]="preview.file.name" />
+                <div class="preview-overlay">
+                  <span class="preview-name">{{ preview.file.name }}</span>
+                  <span class="preview-size">{{ formatFileSize(preview.file.size) }}</span>
+                </div>
+                <button
+                  class="remove-btn"
+                  (click)="removeImage(preview.id)"
+                  type="button">
+                  <i class="pi pi-times"></i>
+                </button>
+              </div>
+            }
           </div>
-          <button
-            class="remove-btn"
-            (click)="removeImage(preview.id)"
-            type="button">
-            <i class="pi pi-times"></i>
-          </button>
-        </div>
+        }
+    
+        <!-- Upload Progress -->
+        @if (isUploading) {
+          <div class="upload-progress">
+            <p-progressBar [value]="uploadProgress"></p-progressBar>
+            <p class="progress-text">Subiendo imágenes... {{ uploadProgress }}%</p>
+          </div>
+        }
+    
+        <!-- Info -->
+        @if (imagePreviews.length > 0) {
+          <div class="upload-info">
+            <span>{{ imagePreviews.length }} de {{ maxImages }} imágenes seleccionadas</span>
+          </div>
+        }
       </div>
-
-      <!-- Upload Progress -->
-      <div class="upload-progress" *ngIf="isUploading">
-        <p-progressBar [value]="uploadProgress"></p-progressBar>
-        <p class="progress-text">Subiendo imágenes... {{ uploadProgress }}%</p>
-      </div>
-
-      <!-- Info -->
-      <div class="upload-info" *ngIf="imagePreviews.length > 0">
-        <span>{{ imagePreviews.length }} de {{ maxImages }} imágenes seleccionadas</span>
-      </div>
-    </div>
-  `,
+    `,
   styles: [`
     .upload-container {
       width: 100%;
